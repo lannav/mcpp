@@ -1,0 +1,72 @@
+package IE;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import blogic.Person;
+
+public class ImplExp_XML implements ImplExp
+{
+	File file = null;
+	ArrayList<Person> pp = null;
+	
+	public ImplExp_XML(File file, ArrayList<Person> pp)
+	{
+		this.file = file;
+		this.pp = pp;
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Person> load() 
+	{
+		pp = new ArrayList<Person>();
+		try {
+            // Создается построитель документа
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            // Создается дерево DOM документа из файла
+            Document document = documentBuilder.parse("E:\\PersonData\\PersonXML.xml");
+            // Получаем корневой элемент
+            Node root = document.getDocumentElement();
+         // Просматриваем все подэлементы корневого - т.е. персоны
+            NodeList persons = root.getChildNodes();
+            for (int i = 0; i < persons.getLength(); i++) 
+            {
+                Node person = persons.item(i);
+                // Если нода не текст, то это персона - заходим внутрь
+                if (person.getNodeType() != Node.TEXT_NODE) 
+                {
+                    NodeList personData = person.getChildNodes();
+                    Person p = new Person(Integer.parseInt(personData.item(0).getTextContent()),personData.item(1).getTextContent(),personData.item(2).getTextContent(),Integer.parseInt(personData.item(3).getTextContent()));
+                    pp.add(p);
+                }
+            }
+        } catch (ParserConfigurationException ex) 
+        {
+            ex.printStackTrace(System.out);
+        } catch (SAXException ex) 
+        {
+            ex.printStackTrace(System.out);
+        } catch (IOException ex) 
+        {
+            ex.printStackTrace(System.out);
+        }
+		return pp;
+	}
+
+}

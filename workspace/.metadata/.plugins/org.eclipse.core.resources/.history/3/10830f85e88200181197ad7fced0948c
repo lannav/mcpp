@@ -1,0 +1,16 @@
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
+public class Integration
+{
+	public Integration() throws IOException
+	{
+		File file = new File("C:\\Users\\Admin\\Desktop\\1cv8.ink");
+	//	Desktop.getDesktop().open(file);
+	//	Desktop.getDesktop().open(new File("C:\\Users\\Admin\\Desktop\\1cv8.ink"));
+	//	Runtime.getRuntime().exec("C:\\Users\\Admin\\Desktop\\1cv8");
+		ProcessBuilder pb = new ProcessBuilder("C:\\Users\\Admin\\Desktop\\1cv8.ink");
+        pb.start();
+	}
+}

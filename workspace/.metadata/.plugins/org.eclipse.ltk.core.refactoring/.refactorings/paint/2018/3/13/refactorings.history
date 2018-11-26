@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;PDraw.java&apos; to &apos;PaintVector/src/(default package)&apos;&#x0D;&#x0A;- Original project: &apos;paint&apos;&#x0D;&#x0A;- Destination element: &apos;PaintVector/src/(default package)&apos;&#x0D;&#x0A;- Original element: &apos;paint.PDraw.java&apos;" description="Copy compilation unit" destination="=PaintVector/src&lt;" element1="/src&lt;paint{PDraw.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1522409490879" units="1" version="1.0"/>
+</session>

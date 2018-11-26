@@ -1,0 +1,64 @@
+import java.util.Stack;
+
+import javax.swing.JOptionPane;
+
+public class Cargo 
+{
+	public Cargo ()
+	{
+		String res = "#1 slot_a -> slot_c\n"
+				   + "#2 slot_a -> slot_b\n"
+				   + "#1 slot_c -> slot_b\n";
+		
+		int slab = Integer.parseInt(JOptionPane.showInputDialog("input number"));
+		
+		String result = res + "#3 slot_a -> slot_c\n" + transABtoBC(res);
+		
+		for(int i = 4; i <= slab; i++)
+		{
+			result = transACAB(result) + "#" + i + " slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+		}
+		
+//		if(slab >= 3)
+//			result += res + "#3 slot_a -> slot_c\n" + transABtoBC(res);
+//		
+//		if(slab >= 4)
+//			result = transACAB(result) + "#4 slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+//		
+//		if(slab >= 5)
+//			result = transACAB(result) + "#5 slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+//		
+//		if(slab >= 6)
+//			result = transACAB(result) + "#6 slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+//		
+//		if(slab >= 7)
+//			result = transACAB(result) + "#7 slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+//		
+//		if(slab == 8)
+//			result = transACAB(result) + "#8 slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+		
+		System.out.println(result);
+		JOptionPane.showMessageDialog(null,result);
+	}
+	
+	private String transACAB(String str)
+	{
+		str = str.replaceAll("c", "x");
+		str = str.replaceAll("b", "c");
+		str = str.replaceAll("x", "b");
+
+		return str;
+	}
+	
+	private String transABtoBC(String str)
+	{
+		str = str.replaceAll("a", "x");
+		str = str.replaceAll("b", "y");
+		str = str.replaceAll("c", "a");
+		str = str.replaceAll("x", "b");
+		str = str.replaceAll("y", "c");
+
+		return str;
+	}
+	
+}

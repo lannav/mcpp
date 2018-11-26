@@ -1,0 +1,54 @@
+package BallExtJpanelThread;
+import java.awt.Color;
+import javax.swing.JPanel;
+
+public class Ball extends JPanel implements Runnable
+{
+	int x,y;
+	int R = (int)(Math.random()*10+10);
+	int dx, dy;
+	int clr = (int)(Math.random() *10000000);
+
+	public Ball(int x, int y)
+	{
+		dx = getD();
+		this.x = x;
+		this.y = y;
+		dy = getD();
+	}
+	
+	public void move()
+	{
+		if(x >= 785 - R)
+			dx *= -1;
+		if(x <= 0 + R)
+			dx *= -1;
+		if(y >= 560 - R)
+			dy *= -1;
+		if(y <= 0 + R)
+			dy *= -1;
+		
+		x += dx;
+		y += dy;
+		
+	}
+	public int getD()
+	{
+		int rs = (int)(Math.random()*12-6);
+		while(rs == 0)
+			rs = (int)(Math.random()*12-6);
+		return rs;
+	}
+	
+	public void rev()
+	{
+		dx *= -1;
+		dy *= -1;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+}

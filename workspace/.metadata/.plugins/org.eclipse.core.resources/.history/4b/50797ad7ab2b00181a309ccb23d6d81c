@@ -1,0 +1,12 @@
+import java.util.ArrayList;
+
+public class XData 
+{
+	public static void main(String[] args)
+	{
+		PersonDAO_Mock pd = new PersonDAO_Mock();
+		ArrayList<Person> pp = pd.read();
+		for(Person p:pp)
+			System.out.println(p);
+	}
+}

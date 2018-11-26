@@ -1,0 +1,9 @@
+import java.io.File;
+
+public class Integration
+{
+	public Integration()
+	{
+		File file = new File("C:\\Program Files\\1cv8\\8.3.12.1529\\bin\\1cv8.exe\" /IBName \"»нформационна€ база\" /N \"\"  /p \"\" /Execute \"E:\\¬нешн€€ќбработка1.epf");
+	}
+}

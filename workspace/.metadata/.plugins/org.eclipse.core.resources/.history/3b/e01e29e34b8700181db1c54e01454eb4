@@ -1,0 +1,136 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class CPanel extends JPanel 
+{
+	JLabel output;
+	ArrayList<Character> digits = new ArrayList<Character>();
+	ArrayList<Character> operations = new ArrayList<Character>();
+	char operation = 0;
+	String ch1;
+	
+	public CPanel()
+	{
+		char[] mas = {'0','1','2','3','4','5','6','7','8','9','/','*','-','+','%'};
+		for(int i = 0; i < mas.length; i++)
+		{
+			if(i < 10)
+				digits.add(mas[i]);
+			else
+				operations.add(mas[i]);
+		}
+		setLayout(null);
+		setBounds(0,0,400,300);
+		setBackground(new Color(28, 28, 28));
+		
+		output = new JLabel();
+		output.setHorizontalAlignment(JTextField.RIGHT);
+		output.setBounds(5, 5, 275, 30);
+		output.setBackground(new Color(28, 28, 28));
+		output.setBorder(null);
+		output.setForeground(Color.WHITE);
+		output.setFont(new Font("Colibri",Font.BOLD,30));
+		output.setText("0");
+		
+		addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				if (digits.contains(e.getKeyChar())) 
+				{	
+					String check = "";
+					if(operation == 0)
+						check = "0";
+					else
+						check = ch1.toString();
+					
+					System.out.println(output.getText() +"5"+check);
+					
+					if (e.getKeyChar() == '.' && !output.getText().equals(check))
+						if (!output.getText().contains("."))
+							output.setText(output.getText() + e.getKeyChar());
+						else if (e.getKeyChar() == '.' && output.getText().equals(check))
+							output.setText("0" + e.getKeyChar());
+					
+					if (!output.getText().equals(check))
+						output.setText(output.getText() + e.getKeyChar());
+					else if (output.getText().equals(check))
+						output.setText(e.getKeyChar() + "");
+					
+					
+				}
+				if (operations.contains(e.getKeyChar()))
+				{
+					operation = e.getKeyChar();
+					ch1 = output.getText();
+				}
+				
+				if(e.getKeyChar() == '\n' && operation != 0)
+					sendRequest();
+				
+				if(e.getKeyChar() == '\b')
+					if(output.getText().length() == 1)
+						output.setText("0");
+					else
+						output.setText(output.getText().substring(0, output.getText().length()-1));
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
+
+        setFocusable(true);
+        requestFocusInWindow();
+		add(output);
+		
+//		JButton create = new JButton("create");
+//		create.setBounds(460, 150, 120, 20);
+//		create.setBackground(Color.cyan);
+//		create.addActionListener(dm.aCreate);
+//		add(create);
+	}
+
+	private void sendRequest() {
+		try {
+			URL obj = new URL("http://localhost/calc/calcJava.php?ch1="+ch1+"&ch2="+output.getText()+"&op="+operation);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("GET");
+			DocumentBuilder infoWriter = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Document info = infoWriter.parse(con.getInputStream());
+		} catch (IOException | ParserConfigurationException | SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

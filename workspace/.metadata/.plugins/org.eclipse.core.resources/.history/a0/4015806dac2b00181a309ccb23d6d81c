@@ -1,0 +1,127 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.table.AbstractTableModel;
+
+public class PersonDM extends AbstractTableModel
+{
+	ActionCreate aCreate = new ActionCreate();
+	ActionRead aRead     = new ActionRead();
+	ActionUpdate aUpdate = new ActionUpdate();
+	ActionDelete aDelete = new ActionDelete();
+	
+	ArrayList<Person> pp = null;
+	PersonDAO_Mock pd = null;
+
+	public PersonDM()
+	{
+		pd = new PersonDAO_Mock();
+		pp = new ArrayList<Person>();
+	}
+	
+	
+	class ActionCreate implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+		//	Person p = new Person(Integer.parseInt(PPanel.id.getText()), PPanel.fname.getText(), PPanel.lname.getText(), Integer.parseInt(PPanel.age.getText()));
+			Person p = new Person(10,"jhkjgh","hgkjg",20);
+			pd.create(p);
+		//	PPanel.id.setText("");
+		//	PPanel.fname.setText("");
+		//	PPanel.lname.setText("");
+		//	PPanel.age.setText("");
+			reload();
+		}
+		
+		private void reload() 
+		{
+			pp = pd.read();
+			fireTableDataChanged(); // перезагружаем(перезаполняем после изменения) таблицу
+		}
+	}
+	
+	class ActionRead implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			pp = pd.read();
+			fireTableDataChanged();
+		}
+	}
+	
+	class ActionUpdate implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			Person p = new Person();
+			pd.create(p);
+			reload();
+		}
+		
+		private void reload() 
+		{
+			pp = pd.read();
+			fireTableDataChanged(); // перезагружаем(перезаполняем после изменения) таблицу
+		}
+	}
+	
+	class ActionDelete implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			Person p = new Person(10,"dfgdfg","sdgsdg",65);
+			pd.create(p);
+			reload();
+		}
+		
+		private void reload() 
+		{
+			pp = pd.read();
+			fireTableDataChanged(); // перезагружаем(перезаполняем после изменения) таблицу
+		}
+	}
+
+	
+	@Override
+	public int getColumnCount() 
+	{
+		return 4;
+	}
+
+	@Override
+	public int getRowCount() 
+	{
+		return pp.size();
+	}
+
+	@Override
+	public Object getValueAt(int row, int col) 
+	{
+		Person p = pp.get(row);
+		Object res = null;
+		switch(col)
+		{
+		case 0 : res = p.id; break;
+		case 1 : res = p.fname; break;
+		case 2 : res = p.lname; break;
+		case 3 : res = p.age; break;
+		}
+		return res;
+	}
+@Override
+public String getColumnName(int col) 
+{
+	String[] str = {"ID","FNAME","LNAME","AGE"};
+	return str[col];
+}
+}

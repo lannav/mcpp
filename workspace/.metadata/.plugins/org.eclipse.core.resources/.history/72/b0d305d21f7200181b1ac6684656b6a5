@@ -1,0 +1,17 @@
+import javax.swing.JOptionPane;
+
+public class Tournament 
+{
+	public Tournament()
+	{
+		double you = Double.parseDouble(JOptionPane.showInputDialog("input you chance"));
+		double zival = Double.parseDouble(JOptionPane.showInputDialog("input rival chance"));
+		int firstStep = Integer.parseInt(JOptionPane.showInputDialog("who walks first (you - 1, rival - 2)"));
+		
+		if(firstStep == 1)
+			JOptionPane.showMessageDialog(null,"the optimal step for a shot "+10);
+		if(firstStep == 2)
+			JOptionPane.showMessageDialog(null,"the optimal step for a shot "+9);
+			
+	}
+}

@@ -1,0 +1,12 @@
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+public class ButtonPanel extends JPanel
+{
+	JButton AC,plmin,per,div,seven,eight,nine,inc,four,five,six,minus,one,two,three,plus,zero,point,result;
+	
+	public ButtonPanel()
+	{
+		
+	}
+}

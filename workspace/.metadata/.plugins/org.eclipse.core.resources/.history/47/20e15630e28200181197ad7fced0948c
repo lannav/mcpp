@@ -1,0 +1,33 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import com.sun.net.httpserver.Authenticator;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpPrincipal;
+
+class Auth extends Authenticator {
+	private ArrayList<String> validPages = new ArrayList<>();
+	private HashMap<Long, MapCard> map = new HashMap<>();
+	private HttpExchange exchange;
+
+	public Auth() {
+		validPages.add("/index.html");
+		validPages.add("/user.html");
+		validPages.add("/admin.html");
+		validPages.add("/phpRequest.js");
+		validPages.add("/");
+	}
+
+	@Override
+	public Result authenticate(HttpExchange httpExchange) {
+		exchange = httpExchange;
+		String request = httpExchange.getRequestURI().toString();
+		if (validPages.contains(request) || request.startsWith("/API"))
+			return new Success(new HttpPrincipal("c0nst", "realm"));
+		else
+			return new Failure(418);
+	}
+
+	public boolean isSessionAlive() {
+		long currentTime

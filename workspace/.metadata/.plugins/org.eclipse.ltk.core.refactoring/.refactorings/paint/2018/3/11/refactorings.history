@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 3 elements to &apos;PersonDAO/src&apos;&#x0D;&#x0A;- Original project: &apos;paint&apos;&#x0D;&#x0A;- Destination element: &apos;PersonDAO/src&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     paint.PPanel.java&#x0D;&#x0A;     paint.PFrame.java&#x0D;&#x0A;     paint.PMain.java" description="Copy compilation units" destination="=PersonDAO/src" element1="/src&lt;paint{PPanel.java" element2="/src&lt;paint{PFrame.java" element3="/src&lt;paint{PMain.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1521282654537" units="3" version="1.0"/>
+</session>

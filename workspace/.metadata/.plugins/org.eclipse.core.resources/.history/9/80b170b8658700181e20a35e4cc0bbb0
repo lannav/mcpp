@@ -1,0 +1,19 @@
+import java.awt.Graphics;
+
+import javax.swing.JButton;
+
+public class MyButton extends JButton 
+{
+	 public MyButton(String text) {
+	        super(text, null);
+	    }
+	 
+	 @Override
+	 public void paintComponent(Graphics g)
+	 {
+//		 super.paintComponent(g);
+		 g.setColor(super.getBackground());
+		 g.fillOval(super.getX(), super.getY(), super.getWidth(), super.getHeight());
+		 repaint();
+	 }
+}

@@ -1,0 +1,5 @@
+import java.awt.Component;
+
+public class CPanel extends Component {
+
+}

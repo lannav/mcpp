@@ -1,0 +1,13 @@
+import java.math.BigDecimal;
+
+public class CMain 
+{
+	public static void main(String[] args) 
+	{
+		//new CFrame();
+		String s = "0.555522";
+		BigDecimal bd = new BigDecimal(s);
+		System.out.println(bd.toString());
+
+	}
+}

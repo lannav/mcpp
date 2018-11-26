@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;gson-2.8.2.jar&apos; to &apos;TelegramBot/lib&apos;&#x0D;&#x0A;- Original project: &apos;Person&apos;&#x0D;&#x0A;- Destination element: &apos;TelegramBot/lib&apos;&#x0D;&#x0A;- Original element: &apos;gson-2.8.2.jar&apos;" description="Copy file" destination="=TelegramBot/lib" element1="lib/gson-2.8.2.jar" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1530382457820" units="0" version="1.0"/>
+</session>

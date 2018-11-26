@@ -1,0 +1,13 @@
+ve Method)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:772)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.start(BundleContextImpl.java:729)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.startWorker0(EquinoxBundle.java:933)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.startWorker(EquinoxBundle.java:309)
+	at org.eclipse.osgi.container.Module.doStart(Module.java:581)
+	at org.eclipse.osgi.container.Module.start(Module.java:449)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:468)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:103)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:529)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:328)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:368)
+	at org.eclips

@@ -1,0 +1,13 @@
+import java.util.ArrayList;
+
+public class XData 
+{
+	public static void main(String[] args)
+	{
+		PersonDAO_Mock pd = new PersonDAO_Mock();
+		pd.create(new Person(1,"000000000000000","0000000000",1));
+		ArrayList<Person> pp = pd.read();
+		for(Person p:pp)
+			System.out.println(p);
+	}
+}

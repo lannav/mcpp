@@ -1,0 +1,41 @@
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
+
+public class Tournament 
+{
+	public Tournament()
+	{
+		String you = JOptionPane.showInputDialog("input you chance");
+		String rival = JOptionPane.showInputDialog("input rival chance");
+		String firstStep = JOptionPane.showInputDialog("who walks first (you - 1, rival - 2)");
+		
+		boolean found1 = Pattern.matches("\\d+[CKF]", you);
+		boolean found2 = Pattern.matches("\\d+[CKF]", rival);
+		boolean found3 = Pattern.matches("\\d+[CKF]", firstStep);
+
+		while(!found1)
+		{
+			you = JOptionPane.showInputDialog("error, input you chance (e.g. 0.2)");
+			found1 = Pattern.matches("0\\.\\d", you);
+		}
+		while(!found2)
+		{
+			rival = JOptionPane.showInputDialog("error, input rival chance (e.g. 0.2)");
+			found1 = Pattern.matches("0\\.\\d", rival);
+		}
+		while(!found3)
+		{
+			firstStep = JOptionPane.showInputDialog("who walks first (you - 1, rival - 2),error input an integer");
+			found1 = Pattern.matches("[1-2]", you);
+		}
+		
+		int fs = Integer.parseInt(firstStep);
+		
+		if(fs == 1)
+			JOptionPane.showMessageDialog(null,"the optimal step for a shot "+10);
+		if(fs == 2)
+			JOptionPane.showMessageDialog(null,"the optimal step for a shot "+9);
+			
+	}
+}

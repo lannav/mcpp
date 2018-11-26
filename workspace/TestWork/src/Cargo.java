@@ -1,0 +1,57 @@
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
+
+/*для любого количества плит выполняются однотипные действия. Весь процесс можно условно разделить на три части 
+  первая часть: перемещение n-1 плит с платформы а на платформу b, где n - количество плит которые нужно переместить
+  вторая часть: после первой части нам доступна самая нижняя плита из платформы а, перемещаем ее(плиту) на платформу с, 
+  а все остальные плиты сложены на плите b 
+  третья часть: перемещаем плиты с платформы b на а.
+  алгоритм работает и со значениями более 8 плит*/
+
+
+
+public class Cargo 
+{
+	public Cargo ()
+	{
+		String str = JOptionPane.showInputDialog("input number of plates");;
+		boolean found = Pattern.matches("\\d+", str);
+
+		while(!found)
+		{
+			str = JOptionPane.showInputDialog("error, input an integer");
+			found = Pattern.matches("\\d+", str);
+		}
+		
+		int slab = Integer.parseInt(str);
+		String result = "#1 slot_a -> slot_c\n";
+		
+		for(int i = 2; i <= slab; i++)
+		{
+			result = transACAB(result) + "#" + i + " slot_a -> slot_c\n" + transABtoBC(transACAB(result));
+		}
+		
+		JOptionPane.showMessageDialog(null,result);
+	}
+	
+	private String transACAB(String str)
+	{
+		str = str.replaceAll("c", "x");
+		str = str.replaceAll("b", "c");
+		str = str.replaceAll("x", "b");
+
+		return str;
+	}
+	
+	private String transABtoBC(String str)
+	{
+		str = str.replaceAll("a", "x");
+		str = str.replaceAll("b", "y");
+		str = str.replaceAll("c", "a");
+		str = str.replaceAll("x", "b");
+		str = str.replaceAll("y", "c");
+
+		return str;
+	}
+}

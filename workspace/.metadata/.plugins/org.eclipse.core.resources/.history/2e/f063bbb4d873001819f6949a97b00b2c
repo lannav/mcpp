@@ -1,0 +1,237 @@
+package Graph;
+
+public class Graph 
+{
+	private Vertex root = null;
+	
+	class Vertex
+	{
+		String val = "";
+		Vertex next = null;
+		Edge root = null;
+		
+		public Vertex(String val)
+		{
+			this.val = val;
+		}
+		
+		public String toString()
+		{
+			String result = val+"\n\t\t{routs:\n\t\t";
+			
+			if(root == null)
+			{
+				result = result.substring(0, result.length()-3);
+				result += "}";
+				return result;
+			}
+			
+			Edge tmp = root;
+			result += tmp.toString() + "\n\t\t";
+			
+			while(tmp.next != null)
+			{
+				tmp = tmp.next;
+				result += tmp.toString() + "\n\t\t";
+			}
+			
+			result = result.substring(0, result.length()-3);
+			result += "}";
+			
+			return result;
+		}
+	}
+	
+	class Edge
+	{
+		int val = 0;
+		Edge next = null;
+		Vertex vr = null;
+		
+		public Edge(int val)
+		{
+			this.val = val;
+		}
+		
+		public String toString()
+		{
+			String result = val + " to " + vr.val;
+			
+			return result;
+		}
+	}
+	
+	void addEdge(String from, String to, int val)
+	{
+		Vertex From = searchVertex(from);
+		Vertex To = searchVertex(to);
+		
+		if(From.root == null)
+		{
+			From.root = new Edge(val);
+			From.root.vr = To;
+		}
+		else
+		{
+			Edge tmp = From.root;
+			while(tmp.next != null)
+				tmp = tmp.next;
+			
+			tmp.next = new Edge(val);
+			tmp.next.vr = To;
+		}
+	}
+	
+	void addVertex(String val)
+	{
+		if(root == null)
+			root = new Vertex(val);
+		else
+		{
+			Vertex tmp = root;
+			while(tmp.next != null)
+			{
+				if(tmp.val == val || tmp.next.val == val)
+					throw new IllegalArgumentException();
+				
+				tmp = tmp.next;
+			}
+			
+			tmp.next = new Vertex(val);
+		}
+	}
+	
+	void delEdge(String from, String to)
+	{
+		Vertex From = searchVertex(from);
+		Vertex To = searchVertex(to);
+		Edge tmp = From.root;
+		
+		while(tmp != null)
+		{
+			if(tmp.vr == To)
+			{
+				delEdge(tmp, From);
+				return;
+			}
+			tmp = tmp.next;
+		}
+		
+		throw new IllegalArgumentException();
+	}
+	
+	void delEdge(Edge del, Vertex from)
+	{
+		if(del == from.root)
+			from.root = from.root.next;
+		else
+		{
+			Edge tmp = from.root;
+		
+			while(tmp.next != null)
+			{
+				Edge prew = tmp;
+				tmp = tmp.next;
+				if(tmp == del)
+				{
+					prew.next = tmp.next;
+					return;
+				}
+			}
+		}
+	}
+	
+	void delVertex(String val)
+	{
+		if(searchVertex(val) == root)
+			root = root.next;
+		else
+		{
+			Vertex tmp = root;
+			
+			while(tmp.next != null)
+			{
+				Vertex prew = tmp;
+				tmp = tmp.next;
+				if(tmp.val == val)
+				{
+					prew.next = tmp.next;
+					return;
+				}
+			}
+		}
+		
+		checkEdge();
+	}
+	
+	private void checkEdge() 
+	{
+		if(root == null)
+			return;
+		
+		Vertex tmp = root;
+		while(tmp != null)
+		{
+			Edge tmpE = tmp.root;
+			while(tmpE != null)
+			{
+				if(tmpE.vr == null)
+				{
+					Edge forDelete = tmpE;
+					tmpE = tmpE.next;
+					delEdge(forDelete, tmp);
+				}
+				else 
+					tmpE = tmpE.next;
+			}
+			tmp = tmp.next;
+		}
+	}
+
+	Vertex searchVertex(String val)
+	{
+		Vertex tmp = root;
+//		if(root.val.equals(val))
+//			return root;
+			
+		Vertex result = null;
+		
+		while(tmp != null)
+		{
+			if(tmp.val.equals(val))
+				result = tmp;
+			
+			tmp = tmp.next;
+		}
+		
+		if(result == null)
+		throw new IllegalArgumentException();
+		else 
+			return result;
+	}
+	
+	public String toString()
+	{
+		String result = "Graph\n\t[cities:\n\t";
+		
+		if(root == null)
+		{
+			result = result.substring(0, result.length()-2);
+			result += "]";
+			return result;
+		}
+		
+		Vertex tmp = root;
+		
+		while(tmp != null)
+		{
+			result += tmp.toString() + "\n\t";
+			tmp = tmp.next;
+		}
+		
+		result = result.substring(0, result.length()-2);
+		result += "]";
+		
+		return result;
+	}
+}

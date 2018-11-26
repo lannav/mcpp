@@ -1,0 +1,26 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Main 
+{
+	public static void main(String[] args)
+	{
+		try
+		{
+			Connection con = DriverManager.getConnection("F:\\1sDB\\1Cv8.1CD","","");
+			Statement stmn = (Statement) con.createStatement();
+			ResultSet rs = stmn.executeQuery("ВЫБРАТЬ Докумет.Номер КАК Номер ИЗ Документы.РеализацияТоваровУслуг КАК Документ");
+	
+			rs.close();
+			stmn.close();
+			con.close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+}

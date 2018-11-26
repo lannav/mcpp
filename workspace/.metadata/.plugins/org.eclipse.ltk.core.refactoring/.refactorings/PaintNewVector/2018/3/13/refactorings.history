@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 5 elements to &apos;PaintVector/src/(default package)&apos;&#x0D;&#x0A;- Original project: &apos;PaintNewVector&apos;&#x0D;&#x0A;- Destination element: &apos;PaintVector/src/(default package)&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     PColor.java&#x0D;&#x0A;     PData.java&#x0D;&#x0A;     PType.java&#x0D;&#x0A;     PWidth.java&#x0D;&#x0A;     PCommand.java" description="Copy compilation units" destination="=PaintVector/src&lt;" element1="/src&lt;{PColor.java" element2="/src&lt;{PData.java" element3="/src&lt;{PType.java" element4="/src&lt;{PWidth.java" element5="/src&lt;{PCommand.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1522408684710" units="5" version="1.0"/>
+</session>

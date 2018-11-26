@@ -1,0 +1,511 @@
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+
+public class PCommand 
+{
+	PData data = PData.getInstance();
+	private static PCommand instance = null;
+	
+	private PCommand(PData data)
+	{
+		this.data = data; // принимаем дата и инициализируем поле
+	}
+	private PCommand(){}
+	
+	ActionWidth aWidth = new ActionWidth();
+	ActionColor aColor = new ActionColor();
+	ActionType aType = new ActionType();
+	ActionLoad aLoad = new ActionLoad();
+	ActionSave aSave = new ActionSave();
+	ChangeList aCList = new ChangeList();
+	
+	public static PCommand getInstance()
+	{
+		if(instance == null)
+			instance = new PCommand();
+		
+		return instance;
+	}
+	
+	class ActionColor implements ActionListener
+	{
+		 public void actionPerformed(ActionEvent e) 
+	        {
+			 String str = e.getActionCommand();
+			 switch(str)
+			 {
+			 case "red" : data.clr = Color.red.getRGB(); break;
+			 case "green" : data.clr = Color.green.getRGB(); break;
+			 case "blue" : data.clr = Color.blue.getRGB(); break;
+			 default : break;
+			 }
+	        }
+	}
+	
+	class ActionWidth implements ActionListener
+	{
+		 public void actionPerformed(ActionEvent e) 
+	        {
+			 String str = e.getActionCommand();
+			 switch(str)
+			 {
+			 case "bt1" : data.width = 1; break;
+			 case "bt2" : data.width = 2; break;
+			 case "bt4" : data.width = 4; break;
+			 default : break;
+			 }
+	        }
+	}
+	
+	class ActionType implements ActionListener
+	{
+		 public void actionPerformed(ActionEvent e) 
+	        {
+			 String str = e.getActionCommand();
+			 switch(str)
+			 {
+			 case "curve" : data.type = "curve"; break;
+			 case "line" : data.type = "line"; break;
+			 case "rect" : data.type = "rect"; break;
+			 case "Rrect" : data.type = "Rrect"; break;
+			 case "oval" : data.type = "oval"; break;
+			 default : break;
+			 }
+	        }
+	}
+	
+	class ActionSave implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent ev) 
+		{
+			JFileChooser fileSave = new JFileChooser();
+			fileSave.setDialogTitle("Сохранение файла");
+			fileSave.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	        int result = fileSave.showSaveDialog(null);
+	        if (result == JFileChooser.APPROVE_OPTION )
+	        {
+	        	String extension = fileSave.getSelectedFile().getPath().replaceAll(".*\\.", "");
+	        	switch(extension)
+	        	{
+	        	case "yaml" : doYaml(fileSave); break;
+	        	case "csv"  : doCsv(fileSave);  break;
+	        	case "json" : doJson(fileSave); break;
+	        	case "xml"  : doXml(fileSave);  break;
+	        	case "jpeg" : doJpeg(fileSave); break;
+	        	default : break;
+	        	}
+	        }
+		}
+		public void doCsv(JFileChooser fileSave)
+		{
+			try {
+				FileWriter output = new FileWriter(fileSave.getSelectedFile());
+				
+				String rs = "";
+				for(PShape p:PDraw.pp)
+				{
+					int[] tmp = p.getParameters(); 
+					String fig = "";
+					switch(p.getClass().getName())
+					{
+					case "PCurve"     : fig = "curve";          break;
+					case "PLine"      : fig = "line";           break;
+					case "PRect"      : fig = "rectangle";      break;
+					case "PRoundRect" : fig = "roundRectangle"; break;
+					case "POval"      : fig = "oval";           break;
+					}
+					rs += fig + "," + tmp[0] + "," + tmp[1] + "," + tmp[2] + "," + tmp[3] + "," + tmp[4] + "," + tmp[5] + "\n";
+				}
+				output.write(rs);
+				output.close();
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		public void doYaml(JFileChooser fileSave)
+		{
+			try {
+				FileWriter output = new FileWriter(fileSave.getSelectedFile());
+				
+				String rs = "shapes:\n";
+				for(PShape p:PDraw.pp)
+				{
+					int[] tmp = p.getParameters(); 
+					String fig = "";
+					switch(p.getClass().getName())
+					{
+					case "PCurve"     : fig = "curve";          break;
+					case "PLine"      : fig = "line";           break;
+					case "PRect"      : fig = "rectangle";      break;
+					case "PRoundRect" : fig = "roundRectangle"; break;
+					case "POval"      : fig = "oval";           break;
+					}
+					rs += " - " + fig + ":\n" + "\tx: " + tmp[0] + "\n" + "\ty: " + tmp[1] + "\n" + "\tx2: " + tmp[2] + "\n" + "\ty2: " + tmp[3] + "\n" + "\tcolor: " + tmp[4] + "\n" + "\twidth: " + tmp[5] + "\n";
+				}
+				output.write(rs);
+				output.close();
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		public void doJson(JFileChooser fileSave)
+		{
+			try {
+				FileWriter output = new FileWriter(fileSave.getSelectedFile());
+				
+				String rs = "{\"Shapes\":";
+				for(PShape p:PDraw.pp)
+				{
+					int[] tmp = p.getParameters(); 
+					String fig = "";
+					switch(p.getClass().getName())
+					{
+					case "PCurve"     : fig = "curve";          break;
+					case "PLine"      : fig = "line";           break;
+					case "PRect"      : fig = "rectangle";      break;
+					case "PRoundRect" : fig = "roundRectangle"; break;
+					case "POval"      : fig = "oval";           break;
+					}
+					rs += "{\"shape\":\"" + fig + "\",\"x\":" + tmp[0] + ",\"y\":" + tmp[1] + ",\"x2\":" + tmp[2] + ",\"y2\":" + tmp[3] + ",\"color\":" + tmp[4] + ",\"width\":" + tmp[5] + "}";
+				}
+				rs += "}";
+				output.write(rs);
+				output.close();
+			} catch (IOException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+		public void doXml(JFileChooser fileSave)
+		{
+			try {
+				DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	            Document document = documentBuilder.getDOMImplementation().createDocument("", "Shapes", null);
+	            Node root = document.getDocumentElement();
+				for(PShape p:PDraw.pp)
+				{
+					int[] tmp = p.getParameters(); 
+					String fig = "";
+					switch(p.getClass().getName())
+					{
+					case "PCurve"     : fig = "curve";          break;
+					case "PLine"      : fig = "line";           break;
+					case "PRect"      : fig = "rectangle";      break;
+					case "PRoundRect" : fig = "roundRectangle"; break;
+					case "POval"      : fig = "oval";           break;
+					}
+					Element shape = document.createElement(fig);
+		         
+		            Element x = document.createElement("x");	    
+		            x.setTextContent(tmp[0]+"");	    		        
+		            Element y = document.createElement("y");
+		            y.setTextContent(tmp[1]+"");
+		            Element x2 = document.createElement("x2");		    		          
+		            x2.setTextContent(tmp[2]+"");	    		        
+		            Element y2 = document.createElement("y2");
+		            y2.setTextContent(tmp[3]+"");    		       
+		            Element color = document.createElement("color");
+		            color.setTextContent(tmp[4]+"");	    		  
+		            Element width = document.createElement("width");
+		            width.setTextContent(tmp[5]+"");
+
+		            shape.appendChild(x);
+		            shape.appendChild(y);
+		            shape.appendChild(x2);
+		            shape.appendChild(y2);
+		            shape.appendChild(color);
+		            shape.appendChild(width);
+		            root.appendChild(shape);
+		        }
+				 	Transformer tr = TransformerFactory.newInstance().newTransformer();
+		            DOMSource source = new DOMSource(document);
+		            FileOutputStream fos = new FileOutputStream(fileSave.getSelectedFile());
+		            StreamResult res = new StreamResult(fos);
+		            tr.transform(source, res);
+			} catch (ParserConfigurationException ex) 
+            {
+	            ex.printStackTrace(System.out);
+	        } catch (IOException ex) 
+	        {
+	            ex.printStackTrace(System.out);
+	        } catch (TransformerException e) 
+			{
+	            e.printStackTrace(System.out);
+	        }
+		}
+		public void doJpeg(JFileChooser fileSave)
+		{
+			try {
+				BufferedImage bi = new BufferedImage(540, 380, BufferedImage.SCALE_DEFAULT);
+				
+				for(PShape p:PDraw.pp)
+				{
+				p.draw((Graphics2D)bi.getGraphics());
+				}
+				ImageIO.write(bi, "jpeg", fileSave.getSelectedFile());
+			}catch (IOException e) 
+			{
+				e.printStackTrace(System.out);
+			}
+		}
+	}
+	class ActionLoad implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent ev) 
+		{
+			File file;
+			String extension = "";
+			JFileChooser fileopen = new JFileChooser();
+            int ret = fileopen.showDialog(null, "Открыть файл");                
+            if (ret == JFileChooser.APPROVE_OPTION)
+            {
+            file = fileopen.getSelectedFile();
+            extension = file.getName().replaceAll(".*\\.", "");
+            try {
+				InputStream input = new FileInputStream(file.getPath());
+		         int size = input.available();
+		         String res = "";
+			         for(int j = 0; j < size; j++) 
+			         {
+			            res += (char)input.read();
+			         }
+			         input.close();
+				
+				PDraw.pp = new ArrayList<PShape>();
+				
+	            switch(extension)
+	            {
+	            case "yaml" : doYaml(res);      break;
+	            case "csv"  : doCsv(res);       break;
+	            case "json" : doJson(res);      break;
+	            case "xml"  : doXml(res, file); break;
+	            default : break;
+	            }
+            } catch (IOException ex) 
+	        {
+	            ex.printStackTrace(System.out);
+	        }
+            }
+		}
+		public void doCsv(String res)
+		{
+			String[] figures = res.split("\n");
+		    for(int i = 0; i < figures.length; i++)
+		    {
+		    	String[] actualFig = figures[i].split(",");
+		    	int x = Integer.parseInt(actualFig[1]);
+	    		int y = Integer.parseInt(actualFig[2]);
+	    		int x2 = Integer.parseInt(actualFig[3]);
+	    		int y2 = Integer.parseInt(actualFig[4]);
+	    		int color = Integer.parseInt(actualFig[5]);
+	    		int width = Integer.parseInt(actualFig[6]);
+		    	switch(actualFig[0])
+		    	{
+		    	case "curve": 
+		    		PCurve cur = new PCurve(x,y,x2,y2,color,width);
+		    		PDraw.pp.add(cur);
+		    		break;
+		    	case "line": 
+		    		PLine lin = new PLine(x,y,x2,y2,color,width); 
+		    		PDraw.pp.add(lin);
+		    		break;         
+				case "rectangle": 
+					PRect rec = new PRect(x,y,x2,y2,color,width); 
+					PDraw.pp.add(rec);
+					break;   
+				case "roundRectangle": 
+					PRoundRect rre = new PRoundRect(x,y,x2,y2,color,width);
+					PDraw.pp.add(rre);
+					break;
+				case "oval": 
+					POval ova = new POval(x,y,x2,y2,color,width);
+					PDraw.pp.add(ova);
+					break;
+				default : break;
+		    	}
+		    }
+		    PDraw.getInstance().repaint();
+		}
+		public void doYaml(String res)
+		{
+			res = res.substring(8, res.length());
+		    String[] figures = res.split(" - ");
+		    for(int i = 1; i < figures.length; i++)
+		    {
+		    	String[] actualFig = figures[i].split("\n");
+		    	int x = Integer.parseInt(actualFig[1].substring(4, actualFig[1].length()));
+	    		int y = Integer.parseInt(actualFig[2].substring(4, actualFig[2].length()));
+	    		int x2 = Integer.parseInt(actualFig[3].substring(5, actualFig[3].length()));
+	    		int y2 = Integer.parseInt(actualFig[4].substring(5, actualFig[4].length()));
+	    		int color = Integer.parseInt(actualFig[5].substring(8, actualFig[5].length()));
+	    		int width = Integer.parseInt(actualFig[6].substring(8, actualFig[6].length()));
+		    	switch(actualFig[0])
+		    	{
+		    	case "curve:": 
+		    		PCurve cur = new PCurve(x,y,x2,y2,color,width);
+		    		PDraw.pp.add(cur);
+		    		break;
+		    	case "line:": 
+		    		PLine lin = new PLine(x,y,x2,y2,color,width); 
+		    		PDraw.pp.add(lin);
+		    		break;         
+				case "rectangle:": 
+					PRect rec = new PRect(x,y,x2,y2,color,width); 
+					PDraw.pp.add(rec);
+					break;   
+				case "roundRectangle:": 
+					PRoundRect rre = new PRoundRect(x,y,x2,y2,color,width);
+					PDraw.pp.add(rre);
+					break;
+				case "oval:": 
+					POval ova = new POval(x,y,x2,y2,color,width);
+					PDraw.pp.add(ova);
+					break;
+				default : break;
+		    	}
+		    }
+		    PDraw.getInstance().repaint();
+		}
+		public void doJson(String res)
+		{
+			res = res.substring(10, res.length() - 1);
+        	res = res.replaceAll("[}\"]", "");
+		    String[] figures = res.split("\\{");
+		    for(int i = 1; i < figures.length; i++)
+		    {
+		    	String[] actualFig = figures[i].split(",");
+		    	int x = Integer.parseInt(actualFig[1].replaceAll(".+:", ""));
+	    		int y = Integer.parseInt(actualFig[2].replaceAll(".+:", ""));
+	    		int x2 = Integer.parseInt(actualFig[3].replaceAll(".+:", ""));
+	    		int y2 = Integer.parseInt(actualFig[4].replaceAll(".+:", ""));
+	    		int color = Integer.parseInt(actualFig[5].replaceAll(".+:", ""));
+	    		int width = Integer.parseInt(actualFig[6].replaceAll(".+:", ""));
+		    	switch(actualFig[0].replaceAll(".+:", ""))
+		    	{
+		    	case "curve": 
+		    		PCurve cur = new PCurve(x,y,x2,y2,color,width);
+		    		PDraw.pp.add(cur);
+		    		break;
+		    	case "line": 
+		    		PLine lin = new PLine(x,y,x2,y2,color,width); 
+		    		PDraw.pp.add(lin);
+		    		break;         
+				case "rectangle": 
+					PRect rec = new PRect(x,y,x2,y2,color,width); 
+					PDraw.pp.add(rec);
+					break;   
+				case "roundRectangle": 
+					PRoundRect rre = new PRoundRect(x,y,x2,y2,color,width);
+					PDraw.pp.add(rre);
+					break;
+				case "oval": 
+					POval ova = new POval(x,y,x2,y2,color,width);
+					PDraw.pp.add(ova);
+					break;
+				default : break;
+		    	}
+		    }
+		    PDraw.getInstance().repaint();
+		}
+		public void doXml(String res, File file)
+		{
+		try {
+			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document = documentBuilder.parse(file.getPath());
+            Node root = document.getDocumentElement();
+            NodeList shapes = root.getChildNodes();
+            for (int i = 0; i < shapes.getLength(); i++) 
+            {
+                Node shape = shapes.item(i);
+                if (shape.getNodeType() != Node.TEXT_NODE) 
+                {
+                    NodeList shapeData = shape.getChildNodes();
+                    int x = Integer.parseInt(shapeData.item(0).getTextContent());
+		    		int y = Integer.parseInt(shapeData.item(1).getTextContent());
+		    		int x2 = Integer.parseInt(shapeData.item(2).getTextContent());
+		    		int y2 = Integer.parseInt(shapeData.item(3).getTextContent());
+		    		int color = Integer.parseInt(shapeData.item(4).getTextContent());
+		    		int width = Integer.parseInt(shapeData.item(5).getTextContent());
+		    		switch(shape.getNodeName())
+			    	{
+			    	case "curve": 
+			    		PCurve cur = new PCurve(x,y,x2,y2,color,width);
+			    		PDraw.pp.add(cur);
+			    		break;
+			    	case "line": 
+			    		PLine lin = new PLine(x,y,x2,y2,color,width); 
+			    		PDraw.pp.add(lin);
+			    		break;         
+					case "rectangle": 
+						PRect rec = new PRect(x,y,x2,y2,color,width); 
+						PDraw.pp.add(rec);
+						break;   
+					case "roundRectangle": 
+						PRoundRect rre = new PRoundRect(x,y,x2,y2,color,width);
+						PDraw.pp.add(rre);
+						break;
+					case "oval": 
+						POval ova = new POval(x,y,x2,y2,color,width);
+						PDraw.pp.add(ova);
+						break;
+					default : break;
+			    	}
+                }
+            }
+		    PDraw.getInstance().repaint();
+		}catch (ParserConfigurationException ex) 
+        {
+            ex.printStackTrace(System.out);
+        } catch (IOException ex) 
+        {
+            ex.printStackTrace(System.out);
+        } catch (SAXException ex) 
+        {
+            ex.printStackTrace(System.out);
+        }
+	}
+	}
+	class ChangeList implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent arg0) 
+		{
+			data.clr = PPanel.getInstance().cc.getColor().getRGB();
+		}
+	}
+}

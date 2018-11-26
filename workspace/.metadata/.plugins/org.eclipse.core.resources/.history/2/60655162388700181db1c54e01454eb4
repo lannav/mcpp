@@ -1,0 +1,24 @@
+import java.awt.Color;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class CPanel extends JPanel 
+{
+	public CPanel()
+	{
+		setBounds(10,10,40,40);
+		setBackground(new Color(244, 164, 96));
+		
+		JTextField inputField = new JTextField();
+		inputField.setBounds(0, 0, 40, 200);
+		add(inputField);
+		
+//		JButton create = new JButton("create");
+//		create.setBounds(460, 150, 120, 20);
+//		create.setBackground(Color.cyan);
+//		create.addActionListener(dm.aCreate);
+//		add(create);
+	}
+}

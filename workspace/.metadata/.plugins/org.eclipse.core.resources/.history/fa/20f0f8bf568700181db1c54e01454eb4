@@ -1,0 +1,50 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class CPanel extends JPanel 
+{
+	JLabel output;
+	CLogic cl = new CLogic();
+	
+	public CPanel()
+	{
+		setLayout(null);
+		setBounds(0,0,400,300);
+		setBackground(new Color(28, 28, 28));
+		
+		output = new JLabel();
+		output.setHorizontalAlignment(JTextField.RIGHT);
+		output.setBounds(10, 5, 270, 30);
+		output.setBackground(new Color(28, 28, 28));
+		output.setBorder(null);
+		output.setForeground(Color.WHITE);
+		output.setFont(new Font("Colibri",Font.BOLD,30));
+		output.setText("0");
+		
+		addKeyListener(cl.kl);
+
+        setFocusable(true);
+        requestFocusInWindow();
+		add(output);
+		
+		add(new ButtonPanel(cl));
+	}
+}

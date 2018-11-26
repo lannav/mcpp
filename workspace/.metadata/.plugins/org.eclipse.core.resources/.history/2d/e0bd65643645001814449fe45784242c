@@ -1,0 +1,18 @@
+
+public interface Tree 
+{
+	void clear();
+	void init(int[] ini);
+	void add(int val);
+	int size();
+	int nodes();
+	int leaves();
+	int hight();
+	int[] toArray();
+	void del(int val);
+	int width();
+	String toString();
+	void reverse();
+	boolean equals(Tree tr);
+	boolean check();
+}

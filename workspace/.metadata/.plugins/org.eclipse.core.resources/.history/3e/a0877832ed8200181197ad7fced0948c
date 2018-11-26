@@ -1,0 +1,9 @@
+import java.io.IOException;
+
+public class Integration
+{
+	public Integration() throws IOException
+	{
+		Runtime.getRuntime().exec("\"C:\\Program Files\\1cv8\\8.3.12.1529\\bin\\1cv8.exe\" /IBName \"»нформационна€ база\" /Execute \"E:\\¬нешн€€ќбработка1.epf\"");
+	}
+}

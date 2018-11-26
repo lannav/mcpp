@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test thread-count="5" name="Test">
+  	<classes>
+  			<class name="TestNGtests.TestAddEnd" />
+  			<class name="TestNGtests.TestAddPos" />
+  			<class name="TestNGtests.TestAddStart" />
+  			<class name="TestNGtests.TestClear" />
+  			<class name="TestNGtests.TestDelEnd" />
+  			<class name="TestNGtests.TestDelPos" />
+  			<class name="TestNGtests.TestDelStart" />
+  			<class name="TestNGtests.TestGet" />
+  			<class name="TestNGtests.TestHalfReverse" />
+  			<class name="TestNGtests.TestInit" />
+  			<class name="TestNGtests.TestMax" />
+  			<class name="TestNGtests.TestMaxPos" />
+  			<class name="TestNGtests.TestMin" />
+  			<class name="TestNGtests.TestMinPos" />
+  			<class name="TestNGtests.TestReverse" />
+  			<class name="TestNGtests.TestSet" />
+  			<class name="TestNGtests.TestSize" />
+  			<class name="TestNGtests.TestSmoke" />
+  			<class name="TestNGtests.TestSort" />
+  			<class name="TestNGtests.TestToArray" />
+  			<class name="TestNGtests.TestToString" />
+  	</classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

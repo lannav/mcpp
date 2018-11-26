@@ -1,0 +1,138 @@
+import java.util.Stack;
+
+import javax.swing.JOptionPane;
+
+public class Cargo 
+{
+	String res = "#1 slot_a -> slot_c\n"
+			   + "#2 slot_a -> slot_b\n"
+			   + "#1 slot_c -> slot_b\n";
+	Stack<Integer> slotA = new Stack<Integer>();
+	Stack<Integer> slotB = new Stack<Integer>();
+	Stack<Integer> slotC = new Stack<Integer>();
+	
+	public Cargo ()
+	{
+//		int slab = Integer.parseInt(JOptionPane.showInputDialog("input number"));
+//		
+//		for(int i = slab; i > 0; i--)
+//			slotA.push(i);
+		
+//		if(slab%2 == 0)
+//			doCraneChet();
+//		else
+//			doCraneNeChet++++();
+		//doCrane();
+		//dod();
+		
+//		JOptionPane.showMessageDialog(null,res);
+		transform("abba");
+	}
+
+	private void dod()
+	{
+		String result = res + "#3 slot_a -> slot_c\n";
+	}
+	
+	private String transform(String str)
+	{
+		str.replaceAll("c", "x");
+		str.replaceAll("b", "c");
+		str.replaceAll("x", "b");
+		System.out.println(str);
+		return str;
+	}
+	
+	private void doCrane() 
+	{
+		if(slotA.empty() && slotB.empty())
+			return;
+		
+		if(slotB.empty() && slotC.empty())
+		{
+			System.out.println("1");
+			AtoC();
+			doCrane();
+		}
+		else if(slotB.empty() && !slotC.empty())
+		{
+				if(slotA.peek() < slotC.peek())
+				{
+					System.out.println("2");
+					AtoC();
+				}
+				else
+				{
+					System.out.println("3");
+					AtoB();
+				}
+			doCrane();
+		}
+		else if(!slotB.empty() && !slotC.empty())
+		{
+			if(slotB.peek() > slotC.peek())
+			{
+				System.out.println("4");
+				CtoB();
+			}
+			else
+			{
+				if(slotA.empty())
+				{
+					System.out.println("5");
+					BtoA();
+				}
+				else
+				{
+					System.out.println("6");
+					BtoC();
+				}
+			}
+			doCrane();
+		}
+		else if(!slotB.empty() && slotC.empty())
+		{
+			System.out.println("7");
+			AtoC();
+			doCrane();
+		}
+			
+	}
+
+	
+	private void AtoB()
+	{
+		res += "#"+slotA.peek()+"slot_a -> slot_b\n";
+		slotB.push(slotA.pop());
+	}
+	
+	private void AtoC()
+	{
+		res += "#"+slotA.peek()+"slot_a -> slot_c\n";
+		slotC.push(slotA.pop());
+	}
+	
+	private void BtoA()
+	{
+		res += "#"+slotB.peek()+"slot_b -> slot_a\n";
+		slotA.push(slotB.pop());
+	}
+	
+	private void BtoC()
+	{
+		res += "#"+slotB.peek()+"slot_b -> slot_c\n";
+		slotC.push(slotB.pop());
+	}
+	
+	private void CtoA()
+	{
+		res += "#"+slotC.peek()+"slot_c -> slot_a\n";
+		slotA.push(slotC.pop());
+	}
+	
+	private void CtoB()
+	{
+		res += "#"+slotC.peek()+"slot_c -> slot_b\n";
+		slotB.push(slotC.pop());
+	}
+}

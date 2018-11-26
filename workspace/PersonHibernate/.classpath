@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/h2-1.4.197.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.45-bin.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/snakeyaml-1.5.jar"/>
+	<classpathentry kind="lib" path="libHybernate/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="libHybernate/cdi-api-1.1.jar"/>
+	<classpathentry kind="lib" path="libHybernate/classmate-1.3.0.jar"/>
+	<classpathentry kind="lib" path="libHybernate/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libHybernate/el-api-2.2.jar"/>
+	<classpathentry kind="lib" path="libHybernate/geronimo-jta_1.1_spec-1.1.1.jar"/>
+	<classpathentry kind="lib" path="libHybernate/hibernate-commons-annotations-5.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="libHybernate/hibernate-core-5.2.2.Final.jar"/>
+	<classpathentry kind="lib" path="libHybernate/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="libHybernate/jandex-2.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="libHybernate/javassist-3.20.0-GA.jar"/>
+	<classpathentry kind="lib" path="libHybernate/javax.inject-1.jar"/>
+	<classpathentry kind="lib" path="libHybernate/jboss-interceptors-api_1.1_spec-1.0.0.Beta1.jar"/>
+	<classpathentry kind="lib" path="libHybernate/jboss-logging-3.3.0.Final.jar"/>
+	<classpathentry kind="lib" path="libHybernate/jsr250-api-1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

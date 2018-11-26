@@ -1,0 +1,205 @@
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+public class CLogic 
+{
+	ArrayList<String> digits = new ArrayList<String>();
+	ArrayList<String> operations = new ArrayList<String>();
+	String operation = "0";
+	String ch1;
+	KeyList kl = new KeyList();
+	ActionOper ao = new ActionOper();
+	JLabel output;
+	CPanel cp;
+	String lastResult = "";
+	
+	public CLogic(JLabel output,CPanel cp)
+	{
+		this.cp = cp;
+		this.output = output;
+		String[] mas = {"0","1","2","3","4","5","6","7","8","9",".","/","*","-","+"};
+		for(int i = 0; i < mas.length; i++)
+		{
+			if(i < 11)
+				digits.add(mas[i]);
+			else
+				operations.add(mas[i]);
+		}
+	}
+	
+	class KeyList implements KeyListener
+	{
+
+		@Override
+		public void keyTyped(KeyEvent e) 
+		{
+			switch(e.getKeyChar()+"")
+			{
+			case "0" : ButtonPanel.zero.doClick(); break;
+			case "1" : ButtonPanel.one.doClick(); break;
+			case "2" : ButtonPanel.two.doClick(); break;
+			case "3" : ButtonPanel.three.doClick(); break;
+			case "4" : ButtonPanel.four.doClick(); break;
+			case "5" : ButtonPanel.five.doClick(); break;
+			case "6" : ButtonPanel.six.doClick(); break;
+			case "7" : ButtonPanel.seven.doClick(); break;
+			case "8" : ButtonPanel.eight.doClick(); break;
+			case "9" : ButtonPanel.nine.doClick(); break;
+			case "+" : ButtonPanel.plus.doClick(); break;
+			case "-" : ButtonPanel.minus.doClick(); break;
+			case "/" : ButtonPanel.div.doClick(); break;
+			case "*" : ButtonPanel.inc.doClick(); break;
+			case "\n" : ButtonPanel.result.doClick(); break;
+			case "." : ButtonPanel.point.doClick(); break;
+			case "%" : ButtonPanel.per.doClick(); break;
+			}
+			
+			if(e.getKeyChar()+"" == "\b")
+				if(output.getText().length() == 1)
+					output.setText("0");
+				else
+					output.setText(output.getText().substring(0, output.getText().length()-1));
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+		
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+		
+			
+		}
+		
+	}
+
+	class ActionOper implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			String cha = e.getActionCommand();
+			
+			if(output.getText().length() >= 13 && cha != "=" && !operations.contains(cha))
+				return;
+			
+			if (digits.contains(cha))
+			{
+				if(cha == "." && output.getText().contains("."))
+					return;
+				if(output.getText() == "0")
+				{
+					output.setText(cha+"");
+					return;
+				}
+				output.setText(output.getText() + cha);
+			}
+			
+			if (operations.contains(cha))
+			{
+				operation = cha;
+				switch(cha)
+				{
+				case "+" : ButtonPanel.plus.setBackground(new Color(230, 230, 230));
+							ButtonPanel.plus.setForeground(new Color(238, 154, 0));
+							break;
+				case "-" : ButtonPanel.minus.setBackground(new Color(230, 230, 230));
+							ButtonPanel.minus.setForeground(new Color(238, 154, 0));
+							break;
+				case "/" : ButtonPanel.div.setBackground(new Color(230, 230, 230));
+							ButtonPanel.div.setForeground(new Color(238, 154, 0));
+							break;
+				case "*" : ButtonPanel.inc.setBackground(new Color(230, 230, 230));
+							ButtonPanel.inc.setForeground(new Color(238, 154, 0));
+							break;
+				}
+					ch1 = output.getText();
+					output.setText("0");
+			}
+			
+			if(e.getActionCommand() == "=" && operation != "0")
+			{
+				sendRequest();
+				ch1 = "";
+			}
+			
+			if(e.getActionCommand() == "AC")
+			{
+				ButtonPanel.plus.setBackground(new Color(238, 154, 0));
+				ButtonPanel.plus.setForeground(Color.WHITE);
+				ButtonPanel.minus.setBackground(new Color(238, 154, 0));
+				ButtonPanel.minus.setForeground(Color.WHITE);
+				ButtonPanel.div.setBackground(new Color(238, 154, 0));
+				ButtonPanel.div.setForeground(Color.WHITE);
+				ButtonPanel.inc.setBackground(new Color(238, 154, 0));
+				ButtonPanel.inc.setForeground(Color.WHITE);
+				output.setText("0");
+				ch1 = "";
+				operation = "0";
+				lastResult = "";
+			}
+			
+			if(e.getActionCommand() == "+/-")
+				if(output.getText().contains("-"))
+					output.setText(output.getText().replace("-", ""));
+				else
+					output.setText("-" + output.getText());
+			cp.requestFocusInWindow();
+		}
+		
+	}
+
+	public void sendRequest() {
+		switch(operation)
+		{
+		case "+" : ButtonPanel.plus.setBackground(new Color(238, 154, 0));
+					ButtonPanel.plus.setForeground(Color.WHITE);
+					break;
+		case "-" : ButtonPanel.minus.setBackground(new Color(238, 154, 0));
+					ButtonPanel.minus.setForeground(Color.WHITE);
+					break;
+		case "/" : ButtonPanel.div.setBackground(new Color(238, 154, 0));
+					ButtonPanel.div.setForeground(Color.WHITE);
+					break;
+		case "*" : ButtonPanel.inc.setBackground(new Color(238, 154, 0));
+					ButtonPanel.inc.setForeground(Color.WHITE);
+					break;
+		}
+		try {
+			URL obj = new URL("https://peculiar.top//calcJava.php?ch1="+ch1+"&ch2="+output.getText()+"&op="+operation);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("GET");
+			DocumentBuilder infoWriter = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			Document info = infoWriter.parse(con.getInputStream());
+			Node root = info.getDocumentElement();
+			Node result = root.getFirstChild();
+			String res = result.getTextContent();
+			if(res.length() >= 14)
+				res = res.substring(0, 13);
+			output.setText(res);
+			lastResult = result.getTextContent();
+			
+		} catch (IOException | ParserConfigurationException | SAXException e) {
+		}
+		operation = "0";
+	}
+}
